@@ -18,7 +18,7 @@ import { Page, Locator, expect, BrowserContext } from '@playwright/test';
 import { ENV_CONFIG } from '../config/env.config';
 import * as fs from 'fs';
 import * as path from 'path';
-import { allure } from 'allure-playwright';
+import * as allure from 'allure-js-commons';
 
 export abstract class PageBase {
     protected page: Page;
@@ -86,10 +86,13 @@ export abstract class PageBase {
 
     /** Maximiser la fenêtre du navigateur (plein écran) */
     async maximiserFenetre(): Promise<void> {
-        await this.page.setViewportSize({
-            width: 1920,
-            height: 1080,
+        const dimensions = await this.page.evaluate(() => {
+            return {
+                width: window.screen.availWidth,
+                height: window.screen.availHeight,
+            };
         });
+        await this.page.setViewportSize(dimensions);
     }
 
     // ══════════════════════════════════════════════
@@ -163,13 +166,22 @@ export abstract class PageBase {
     //  INTERACTIONS AVEC LES ÉLÉMENTS
     // ══════════════════════════════════════════════
 
-    /** Cliquer sur un élément avec attente automatique */
+    /** Cliquer sur un élément avec attente dynamique et rapide */
     async cliquer(locateur: Locator, options?: { force?: boolean; delai?: number }): Promise<void> {
-        await this.attendreVisible(locateur, options?.delai);
+        // Attente dynamique : l'élément doit être visible le plus vite possible
+        await locateur.waitFor({ state: 'visible', timeout: options?.delai || ENV_CONFIG.timeouts.action });
+
+        // Clic rapide. On utilise force: true pour éviter les blocages par des bannières/carrousels
         await locateur.click({
-            force: options?.force || false,
+            force: options?.force !== undefined ? options.force : true,
             timeout: options?.delai || ENV_CONFIG.timeouts.action,
         });
+    }
+
+    /** Attendre et cliquer dès que l'élément apparaît (Performance maximale) */
+    async attendreEtCliquer(locateur: Locator): Promise<void> {
+        await locateur.waitFor({ state: 'visible' });
+        await locateur.click({ force: true });
     }
 
     /** Double-cliquer sur un élément */

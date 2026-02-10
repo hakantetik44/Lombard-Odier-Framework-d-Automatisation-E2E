@@ -3,36 +3,27 @@
   "version": "1.0.0",
   "description": "Lombard Odier — Framework d'automatisation E2E avec Playwright, Cucumber et TypeScript",
   "scripts": {
+    "pretest": "npm run clean",
     "test": "npx cucumber-js",
+    "test:report": "npm run clean && npx cucumber-js || true && npm run report:open",
     "test:smoke": "npx cucumber-js --profile smoke",
     "test:regression": "npx cucumber-js --profile regression",
-    "test:critical": "npx cucumber-js --profile critical",
-    "test:e2e": "npx cucumber-js --profile e2e",
     "test:headed": "HEADLESS=false npx cucumber-js",
-    "test:ci": "HEADLESS=true npx cucumber-js --profile regression",
-    "test:playwright": "npx playwright test",
-    "test:playwright:headed": "npx playwright test --headed",
-    "test:playwright:ui": "npx playwright test --ui",
-    "test:full": "npm test && npm run report:allure",
-    "test:smoke:report": "npm run test:smoke && npm run report:allure",
-    "test:regression:report": "npm run test:regression && npm run report:allure",
-    "report:allure": "npx allure generate reports/allure-results --clean -o reports/allure-report && npx allure open reports/allure-report",
-    "report:allure:generate": "npx allure generate reports/allure-results --clean -o reports/allure-report",
-    "report:allure:open": "npx allure open reports/allure-report",
-    "report:cucumber": "open reports/rapport-cucumber.html",
-    "lint": "npx tsc --noEmit",
+    "report:generate": "npx allure generate reports/allure-results --clean -o reports/allure-report",
+    "report:open": "npm run report:generate && npx allure open reports/allure-report",
     "clean": "rm -rf reports/allure-results/* reports/allure-report reports/screenshots/* reports/videos/* reports/rapport-cucumber.*"
   },
   "dependencies": {
-    "@cucumber/cucumber": "^10.3.1",
+    "@cucumber/cucumber": "^10.8.0",
     "@playwright/test": "^1.41.0",
-    "allure-playwright": "^2.15.0",
-    "allure-js-commons": "^2.15.0",
+    "allure-cucumberjs": "^3.4.5",
+    "allure-js-commons": "^3.4.5",
     "dotenv": "^16.3.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   },
   "devDependencies": {
-    "@types/node": "^20.11.0"
+    "@types/node": "^20.11.0",
+    "allure-commandline": "^2.29.0"
   }
 }

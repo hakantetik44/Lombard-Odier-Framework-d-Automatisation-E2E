@@ -81,13 +81,14 @@ Before({ timeout: 60000 }, async function (scenario: ITestCaseHookParameter) {
 
     // Créer un contexte et une page pour ce scénario (isolation des tests)
     await creerContexte();
-    await creerPage();
+    const page = await creerPage();
 
-    // Maximiser la fenêtre du navigateur
+    // Maximiser la fenêtre dès l'ouverture via PagePrincipale
     const { PagePrincipale } = require('../pages/PagePrincipale');
-    const pagePrincipale = new PagePrincipale(getPage());
+    const pagePrincipale = new PagePrincipale(page);
     await pagePrincipale.maximiserFenetre();
-    console.log('  🖥 Fenêtre maximisée (1920x1080)');
+
+    console.log('  🖥 Navigateur prêt et maximisé selon la résolution d\'écran');
 
     // Écrire les infos d'environnement Allure
     ecrireEnvironnementAllure();

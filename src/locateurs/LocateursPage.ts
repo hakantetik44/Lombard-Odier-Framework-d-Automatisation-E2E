@@ -127,16 +127,16 @@ export class LocateursPage {
     constructor(page: Page) {
 
         // ── Bandeau de Cookies ──
-        this.boutonAccepterCookies = page.locator('.rounded-link.accept, button:has-text("Accepter"), button:has-text("Accept"), #onetrust-accept-btn-handler').first();
-        this.boutonRefuserCookies = page.locator('.rounded-link.reject, button:has-text("Refuser"), button:has-text("Reject")').first();
-        this.bandeauCookies = page.locator('#cookie-banner, .cookie-consent, .cookies-overlay, #onetrust-banner-sdk').first();
+        this.boutonAccepterCookies = page.locator('a.rounded-link.shallow, a.rounded-link.accept, button:has-text("Accepter"), #onetrust-accept-btn-handler').first();
+        this.boutonRefuserCookies = page.locator('a.rounded-link.reject, button:has-text("Refuser")').first();
+        this.bandeauCookies = page.locator('.cookies-overlay, #cookie-banner, .cookie-consent, #onetrust-banner-sdk').first();
 
         // ── En-tête & Navigation ──
-        this.logo = page.locator('.header-logo img, .logo img, a.logo, header a[href="/fr/home.html"] img, .site-logo').first();
-        this.boutonMenu = page.locator('.burger-menu, .menu-toggle, button[aria-label="Menu"], .navbar-toggler, .header-burger').first();
-        this.menuNavigation = page.locator('.main-nav, .navigation-menu, nav.primary-nav, .nav-overlay, .menu-panel').first();
-        this.boutonConnexion = page.locator('a[href*="mylo"], a[href*="login"], a:has-text("MyLO"), .login-btn, a:has-text("Connexion"), a:has-text("Se connecter")').first();
-        this.boutonRecherche = page.locator('.search-btn, button[aria-label="Search"], .search-toggle, a[href*="search"]').first();
+        this.logo = page.locator('header a.main-link, header a.linknav, .header-logo, header .logo').first();
+        this.boutonMenu = page.locator('button#leftnavbarbtn, .burger-menu, button[aria-label="Menu"]').first();
+        this.menuNavigation = page.locator('.main-nav, .navigation-menu, nav.primary-nav, .nav-overlay').first();
+        this.boutonConnexion = page.locator('span#login-btn, a.rightnavbar-link.link-area, a:has-text("My LO"), a[href*="mylo"]').first();
+        this.boutonRecherche = page.locator('.search-btn, button[aria-label="Search"], a[href*="search"]').first();
         this.selecteurLangue = page.locator('.language-selector, .lang-switch, .locale-selector').first();
 
         // ── Liens du Menu ──
@@ -158,12 +158,12 @@ export class LocateursPage {
         this.sectionServicesPrives = page.locator('.private-services, section:has-text("clients privés"), [class*="private"]').first();
 
         // ── Pied de Page ──
-        this.piedDePage = page.locator('footer, .site-footer, .footer-main, [role="contentinfo"]').first();
-        this.liensPiedDePage = page.locator('footer a, .footer-links a');
-        this.texteCopyright = page.locator('.copyright, footer .legal, footer small, footer p:has-text("©")').first();
-        this.liensReseauxSociaux = page.locator('footer .social-links a, footer a[href*="linkedin"], footer a[href*="twitter"], footer a[href*="youtube"]');
+        this.piedDePage = page.locator('footer').first();
+        this.liensPiedDePage = page.locator('footer a');
+        this.texteCopyright = page.locator('footer .copyright, footer small, footer p:has-text("©"), footer .footer-item').first();
+        this.liensReseauxSociaux = page.locator('footer a[href*="linkedin"], footer a[href*="twitter"], footer a[href*="youtube"]');
         this.lienLinkedIn = page.locator('a[href*="linkedin.com/company/lombard-odier"], footer a[href*="linkedin"]').first();
-        this.lienMentionsLegales = page.locator('a:has-text("Mentions légales"), a:has-text("Legal"), a[href*="legal"]').first();
+        this.lienMentionsLegales = page.locator('footer a[href*="legal"], footer a:has-text("Mentions légales"), footer a.footer-item.link[href*="legal"]').first();
 
         // ── Formulaire de Connexion ──
         this.champNomUtilisateur = page.locator('#username, input[name="username"], input[type="email"], #email').first();

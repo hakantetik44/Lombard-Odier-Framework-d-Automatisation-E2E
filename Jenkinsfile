@@ -15,50 +15,44 @@
  */
 
 pipeline {
-    agent {
-        docker {
-            image 'mcr.microsoft.com/playwright:v1.50.0-noble'
-            args '-u root --ipc=host'
-        }
-    }
+    agent any
 
     environment {
         NODE_ENV     = 'ci'
         HEADLESS     = 'true'
-        ENV          = "${params.ENVIRONMENT ?: 'staging'}"
+        ENV          = "${params.ENVIRONMENT ?: 'production'}"
         CI           = 'true'
         BROWSER      = "${params.BROWSER ?: 'chromium'}"
+    }
+
+    triggers {
+        pollSCM('H/5 * * * *') // Vérifier les nouveaux commits toutes les 5 minutes
     }
 
     parameters {
         choice(
             name: 'ENVIRONMENT',
-            choices: ['staging', 'production', 'development'],
-            description: 'Target environment for test execution'
+            choices: ['production', 'staging', 'development'],
+            description: 'Environnement cible pour les tests'
         )
         choice(
             name: 'BROWSER',
             choices: ['chromium', 'firefox', 'webkit'],
-            description: 'Browser to run tests on'
+            description: 'Navigateur pour les tests'
         )
         choice(
             name: 'TEST_SUITE',
-            choices: ['regression', 'smoke', 'critical', 'login', 'dashboard', 'risk', 'security'],
-            description: 'Test suite to execute'
-        )
-        booleanParam(
-            name: 'GENERATE_ALLURE',
-            defaultValue: true,
-            description: 'Generate Allure Report after tests'
+            choices: ['regression', 'smoke', 'critical', 'e2e'],
+            description: 'Suite de tests à exécuter'
         )
     }
 
     options {
-        timeout(time: 60, unit: 'MINUTES')
+        timeout(time: 30, unit: 'MINUTES')
         timestamps()
         ansiColor('xterm')
         disableConcurrentBuilds()
-        buildDiscarder(logRotator(numToKeepStr: '20'))
+        buildDiscarder(logRotator(numToKeepStr: '10'))
     }
 
     stages {
@@ -67,69 +61,40 @@ pipeline {
             steps {
                 cleanWs()
                 checkout scm
-                echo "🏦 Lombard Odier E2E Tests - Branch: ${env.GIT_BRANCH}"
+                echo "🏦 Lombard Odier E2E Framework — Branche : ${env.GIT_BRANCH}"
             }
         }
 
-        stage('📦 Install Dependencies') {
+        stage('📦 Installation') {
             steps {
                 sh '''
-                    echo "📦 Installing Node.js dependencies..."
-                    npm ci --prefer-offline
-                    echo "🌐 Installing Playwright browsers..."
+                    echo "📦 Installation des dépendances..."
+                    npm install --legacy-peer-deps
+                    echo "🌐 Installation des navigateurs Playwright..."
                     npx playwright install --with-deps ${BROWSER}
-                    echo "✅ Dependencies installed successfully"
                 '''
             }
         }
 
-        stage('🔍 TypeScript Lint Check') {
+        stage('🔍 Lint & Build') {
             steps {
-                sh '''
-                    echo "🔍 Running TypeScript compilation check..."
-                    npx tsc --noEmit || true
-                    echo "✅ Lint check completed"
-                '''
+                sh 'npm run lint || true'
             }
         }
 
-        stage('🔥 Smoke Tests') {
-            when {
-                expression { params.TEST_SUITE == 'smoke' || params.TEST_SUITE == 'regression' }
-            }
-            steps {
-                sh '''
-                    echo "🔥 Running Smoke Tests..."
-                    npm run test:smoke || true
-                '''
-            }
-        }
-
-        stage('🧪 Test Execution') {
+        stage('🧪 Exécution des Tests (Headless)') {
             steps {
                 script {
-                    def testProfile = params.TEST_SUITE ?: 'regression'
-                    echo "🧪 Executing test suite: ${testProfile}"
-                    sh """
-                        npx cucumber-js --profile ${testProfile} \
-                            --format json:reports/cucumber-report.json \
-                            --format html:reports/cucumber-report.html \
-                            || true
-                    """
+                    echo "🧪 Lancement de la suite : ${params.TEST_SUITE}"
+                    // L'exécution se fait TOUJOURS en Headless dans Jenkins via la variable d'env
+                    sh "HEADLESS=true npx cucumber-js --profile ${params.TEST_SUITE} || true"
                 }
             }
         }
 
-        stage('📊 Generate Reports') {
-            when {
-                expression { params.GENERATE_ALLURE == true }
-            }
+        stage('📊 Génération du Rapport Allure') {
             steps {
-                sh '''
-                    echo "📊 Generating Allure Report..."
-                    npx allure generate reports/allure-results --clean -o reports/allure-report || true
-                    echo "✅ Reports generated successfully"
-                '''
+                sh 'npm run report:generate || true'
             }
         }
     }

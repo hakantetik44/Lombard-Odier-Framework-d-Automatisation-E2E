@@ -24,10 +24,7 @@ export const LAUNCH_OPTIONS: LaunchOptions = {
 };
 
 export const CONTEXT_OPTIONS: BrowserContextOptions = {
-    viewport: {
-        width: ENV_CONFIG.browser.viewportWidth,
-        height: ENV_CONFIG.browser.viewportHeight,
-    },
+    viewport: null, // Allow window to take full size in headed mode
     ignoreHTTPSErrors: true,
     acceptDownloads: true,
     locale: ENV_CONFIG.language === 'fr' ? 'fr-FR' : 'en-US',

@@ -72,6 +72,8 @@ export async function creerPage(): Promise<Page> {
         await creerContexte();
     }
     page = await contexte.newPage();
+
+
     return page;
 }
 

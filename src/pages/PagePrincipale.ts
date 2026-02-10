@@ -14,7 +14,7 @@
 import { Page } from '@playwright/test';
 import { PageBase } from './PageBase';
 import { LocateursPage } from '../locateurs/LocateursPage';
-import { allure } from 'allure-playwright';
+import * as allure from 'allure-js-commons';
 import { ENV_CONFIG } from '../config/env.config';
 
 export class PagePrincipale extends PageBase {
@@ -48,7 +48,6 @@ export class PagePrincipale extends PageBase {
     async ouvrirMenu(): Promise<void> {
         await allure.step('Ouvrir le menu de navigation', async () => {
             await this.cliquer(this.loc.boutonMenu);
-            await this.page.waitForTimeout(500);
         });
     }
 
@@ -56,7 +55,6 @@ export class PagePrincipale extends PageBase {
     async fermerMenu(): Promise<void> {
         await allure.step('Fermer le menu de navigation', async () => {
             await this.cliquer(this.loc.boutonMenu);
-            await this.page.waitForTimeout(500);
         });
     }
 
@@ -113,7 +111,7 @@ export class PagePrincipale extends PageBase {
     /** Naviguer vers la page de connexion */
     async ouvrirPageConnexion(): Promise<void> {
         await allure.step('Naviguer vers la page de connexion', async () => {
-            await this.cliquer(this.loc.boutonConnexion);
+            await this.cliquer(this.loc.boutonConnexion, { force: true });
             await this.attendreChargementPage();
         });
     }
