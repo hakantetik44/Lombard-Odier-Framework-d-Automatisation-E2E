@@ -135,7 +135,7 @@ export class LocateursPage {
         this.logo = page.locator('header a.main-link, header a.linknav, .header-logo, header .logo').first();
         this.boutonMenu = page.locator('button#leftnavbarbtn, .burger-menu, button[aria-label="Menu"]').first();
         this.menuNavigation = page.locator('.main-nav, .navigation-menu, nav.primary-nav, .nav-overlay').first();
-        this.boutonConnexion = page.locator('span#login-btn, a.rightnavbar-link.link-area, a:has-text("My LO"), a[href*="mylo"]').first();
+        this.boutonConnexion = page.locator('header span#login-btn, header a.rightnavbar-link.link-area, header a:has-text("My LO"), header a[href*="mylo"]').first();
         this.boutonRecherche = page.locator('.search-btn, button[aria-label="Search"], a[href*="search"]').first();
         this.selecteurLangue = page.locator('.language-selector, .lang-switch, .locale-selector').first();
 

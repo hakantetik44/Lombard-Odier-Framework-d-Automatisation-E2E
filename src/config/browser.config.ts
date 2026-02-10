@@ -24,7 +24,11 @@ export const LAUNCH_OPTIONS: LaunchOptions = {
 };
 
 export const CONTEXT_OPTIONS: BrowserContextOptions = {
-    viewport: null, // Allow window to take full size in headed mode
+    // En mode headed, viewport null permet de prendre toute la place.
+    // En mode headless (Jenkins), il faut fixer une taille pour éviter les erreurs de clic hors viewport.
+    viewport: ENV_CONFIG.browser.headless
+        ? { width: ENV_CONFIG.browser.viewportWidth, height: ENV_CONFIG.browser.viewportHeight }
+        : null,
     ignoreHTTPSErrors: true,
     acceptDownloads: true,
     locale: ENV_CONFIG.language === 'fr' ? 'fr-FR' : 'en-US',

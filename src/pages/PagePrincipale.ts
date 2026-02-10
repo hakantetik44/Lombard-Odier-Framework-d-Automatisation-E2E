@@ -111,6 +111,8 @@ export class PagePrincipale extends PageBase {
     /** Naviguer vers la page de connexion */
     async ouvrirPageConnexion(): Promise<void> {
         await allure.step('Naviguer vers la page de connexion', async () => {
+            // S'assurer que le bouton est bien dans le champ de vision (sécurité Jenkins)
+            await this.defilerVersElement(this.loc.boutonConnexion);
             await this.cliquer(this.loc.boutonConnexion, { force: true });
             await this.attendreChargementPage();
         });
