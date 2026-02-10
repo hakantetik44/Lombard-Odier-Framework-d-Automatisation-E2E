@@ -12,16 +12,15 @@ import * as path from 'path';
 // Load base .env first
 dotenv.config({ path: path.resolve(process.cwd(), '.env') });
 
-// Override with environment-specific .env if exists
-const envName = process.env.ENV || 'production';
-const envFile = `.env.${envName}`;
+// Override with production .env if exists
+const envFile = '.env.production';
 dotenv.config({ path: path.resolve(process.cwd(), envFile), override: true });
 
 export const ENV_CONFIG = {
     // ── Application ──────────────────────────────────
     baseUrl: process.env.BASE_URL || 'https://www.lombardodier.com',
     language: process.env.LANGUAGE || 'fr',
-    environment: process.env.ENV || 'production',
+    environment: 'production',
 
     // ── Credentials ──────────────────────────────────
     credentials: {

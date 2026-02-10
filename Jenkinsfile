@@ -21,7 +21,7 @@ pipeline {
         PATH         = "/Users/macbook/.nvm/versions/node/v20.20.0/bin:/usr/local/bin:${env.PATH}"
         NODE_ENV     = 'ci'
         HEADLESS     = 'true'
-        ENV          = "${params.ENVIRONMENT ?: 'production'}"
+        ENV          = 'production'
         CI           = 'true'
         BROWSER      = "${params.BROWSER ?: 'chromium'}"
     }
@@ -31,11 +31,6 @@ pipeline {
     }
 
     parameters {
-        choice(
-            name: 'ENVIRONMENT',
-            choices: ['production', 'staging', 'development'],
-            description: 'Environnement cible pour les tests'
-        )
         choice(
             name: 'BROWSER',
             choices: ['chromium', 'firefox', 'webkit'],

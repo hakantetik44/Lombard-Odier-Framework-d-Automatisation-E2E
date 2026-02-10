@@ -261,14 +261,12 @@ Le `Jenkinsfile` fournit une pipeline CI/CD complète :
 | `VIDEO_RECORDING`       | true                             | Activer l'enregistrement vidéo   |
 | `SCREENSHOT_ON_FAILURE` | true                             | Capture en cas d'échec           |
 
-### Support Multi-Environnement
+### Exécution sur Production (Défaut)
+
+Le framework est configuré pour s'exécuter exclusivement sur l'environnement de production.
 
 ```bash
-# Exécuter sur staging
-ENV=staging npm test
-
-# Exécuter sur production (défaut)
-ENV=production npm test
+npm test
 ```
 
 ---
