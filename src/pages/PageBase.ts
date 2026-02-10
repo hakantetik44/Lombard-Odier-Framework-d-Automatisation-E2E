@@ -86,13 +86,19 @@ export abstract class PageBase {
 
     /** Maximiser la fenêtre du navigateur (plein écran) */
     async maximiserFenetre(): Promise<void> {
+        // En mode Headless (Jenkins), window.screen peut être nul ou incorrect
         const dimensions = await this.page.evaluate(() => {
             return {
-                width: window.screen.availWidth,
-                height: window.screen.availHeight,
+                width: window.screen?.availWidth || 1920,
+                height: window.screen?.availHeight || 1080,
             };
         });
-        await this.page.setViewportSize(dimensions);
+
+        // Sécurité pour s'assurer qu'on a au moins une résolution HD
+        const finalWidth = dimensions.width > 0 ? dimensions.width : 1920;
+        const finalHeight = dimensions.height > 0 ? dimensions.height : 1080;
+
+        await this.page.setViewportSize({ width: finalWidth, height: finalHeight });
     }
 
     // ══════════════════════════════════════════════
@@ -430,13 +436,13 @@ export abstract class PageBase {
     /** Accepter le bandeau de cookies */
     async accepterCookies(locateur: Locator): Promise<void> {
         try {
-            const visible = await locateur.isVisible({ timeout: 5000 });
-            if (visible) {
-                await locateur.click();
-                await this.page.waitForTimeout(1000);
-            }
+            // Attente plus longue en CI pour le bandeau de cookies
+            await locateur.waitFor({ state: 'visible', timeout: 8000 });
+            await locateur.click({ force: true });
+            // Temps de repos pour que l'animation de fermeture soit finie
+            await this.page.waitForTimeout(2000);
         } catch {
-            // Le bandeau de cookies peut ne pas apparaître — on continue
+            console.log("  ⚠️ Bandeau de cookies non trouvé ou déjà fermé — On continue le test");
         }
     }
 
