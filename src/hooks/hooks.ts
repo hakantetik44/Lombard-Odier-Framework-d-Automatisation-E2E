@@ -37,7 +37,7 @@ BeforeAll({ timeout: 30000 }, async function () {
     console.log('║   🏦 Lombard Odier — Suite de Tests E2E      ║');
     console.log('║   Environnement : ' + ENV_CONFIG.environment.padEnd(26) + '║');
     console.log('║   Navigateur : ' + ENV_CONFIG.browser.name.padEnd(29) + '║');
-    console.log('║   URL de base : ' + ENV_CONFIG.baseUrl.substring(0, 28).padEnd(28) + '║');
+    console.log('║   URL de base : ' + ENV_CONFIG.baseUrl.padEnd(31) + '║');
     console.log('╚══════════════════════════════════════════════╝');
 
     // Créer les dossiers de rapports
@@ -100,6 +100,10 @@ After({ timeout: 60000 }, async function (scenario: ITestCaseHookParameter) {
     const statut = scenario.result?.status;
 
     console.log(`  Statut : ${statut === Status.PASSED ? '✅ RÉUSSI' : '❌ ÉCHOUÉ'} — ${nomScenario}`);
+
+    if (statut === Status.FAILED) {
+        console.error(`  ❌ MESSAGE D'ERREUR : ${scenario.result?.message}`);
+    }
 
     // 📸 Capture d'écran en cas d'échec
     if (statut === Status.FAILED) {
