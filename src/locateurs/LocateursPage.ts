@@ -1,31 +1,11 @@
-/**
- * ============================================
- * Lombard Odier — LocateursPage
- * ============================================
- * Classe unique centralisant TOUS les sélecteurs du site.
- * Utilise des stratégies de repli multiples pour la robustesse.
- *
- * Sections couvertes :
- *   - Page d'accueil (bandeau cookies, navigation, héros, pied de page)
- *   - Page de connexion (formulaire, erreurs, 2FA)
- *   - Tableau de bord (portefeuille, comptes, transactions)
- *   - Analyse des risques (métriques, stress test, conformité, ESG)
- */
-
 import { Page, Locator } from '@playwright/test';
 
 export class LocateursPage {
 
-    // ══════════════════════════════════════════════
-    //  BANDEAU DE COOKIES
-    // ══════════════════════════════════════════════
     readonly boutonAccepterCookies: Locator;
     readonly boutonRefuserCookies: Locator;
     readonly bandeauCookies: Locator;
 
-    // ══════════════════════════════════════════════
-    //  EN-TÊTE & NAVIGATION PRINCIPALE
-    // ══════════════════════════════════════════════
     readonly logo: Locator;
     readonly boutonMenu: Locator;
     readonly menuNavigation: Locator;
@@ -33,33 +13,21 @@ export class LocateursPage {
     readonly boutonRecherche: Locator;
     readonly selecteurLangue: Locator;
 
-    // ══════════════════════════════════════════════
-    //  LIENS DU MENU
-    // ══════════════════════════════════════════════
     readonly lienGestionPatrimoine: Locator;
     readonly lienGestionActifs: Locator;
     readonly lienTechnologie: Locator;
     readonly lienDeveloppementDurable: Locator;
     readonly lienNousDecouvrir: Locator;
 
-    // ══════════════════════════════════════════════
-    //  SECTION HÉROS (PAGE D'ACCUEIL)
-    // ══════════════════════════════════════════════
     readonly sectionHeros: Locator;
     readonly titreHeros: Locator;
     readonly sousTitreHeros: Locator;
 
-    // ══════════════════════════════════════════════
-    //  SECTIONS DE CONTENU
-    // ══════════════════════════════════════════════
     readonly sectionExpertise: Locator;
     readonly sectionActualites: Locator;
     readonly cartesActualites: Locator;
     readonly sectionServicesPrives: Locator;
 
-    // ══════════════════════════════════════════════
-    //  PIED DE PAGE
-    // ══════════════════════════════════════════════
     readonly piedDePage: Locator;
     readonly liensPiedDePage: Locator;
     readonly texteCopyright: Locator;
@@ -67,9 +35,6 @@ export class LocateursPage {
     readonly lienLinkedIn: Locator;
     readonly lienMentionsLegales: Locator;
 
-    // ══════════════════════════════════════════════
-    //  FORMULAIRE DE CONNEXION
-    // ══════════════════════════════════════════════
     readonly champNomUtilisateur: Locator;
     readonly champMotDePasse: Locator;
     readonly boutonSoumettre: Locator;
@@ -77,15 +42,9 @@ export class LocateursPage {
     readonly lienMotDePasseOublie: Locator;
     readonly titreConnexion: Locator;
 
-    // ══════════════════════════════════════════════
-    //  DOUBLE AUTHENTIFICATION (2FA)
-    // ══════════════════════════════════════════════
     readonly champCodeOTP: Locator;
     readonly boutonValiderOTP: Locator;
 
-    // ══════════════════════════════════════════════
-    //  TABLEAU DE BORD
-    // ══════════════════════════════════════════════
     readonly messageAccueil: Locator;
     readonly nomClient: Locator;
     readonly boutonDeconnexion: Locator;
@@ -98,16 +57,10 @@ export class LocateursPage {
     readonly lignesTransactions: Locator;
     readonly sectionMarcheVueEnsemble: Locator;
 
-    // ══════════════════════════════════════════════
-    //  ACTIONS RAPIDES
-    // ══════════════════════════════════════════════
     readonly boutonVirement: Locator;
     readonly boutonInvestissement: Locator;
     readonly boutonContacterConseiller: Locator;
 
-    // ══════════════════════════════════════════════
-    //  ANALYSE DES RISQUES
-    // ══════════════════════════════════════════════
     readonly scoreRisque: Locator;
     readonly niveauRisque: Locator;
     readonly valeurVolatilite: Locator;
@@ -125,13 +78,10 @@ export class LocateursPage {
     readonly scoreGouvernance: Locator;
 
     constructor(page: Page) {
-
-        // ── Bandeau de Cookies ──
         this.boutonAccepterCookies = page.locator('a.rounded-link.shallow, a.rounded-link.accept, button:has-text("Accepter"), #onetrust-accept-btn-handler').first();
         this.boutonRefuserCookies = page.locator('a.rounded-link.reject, button:has-text("Refuser")').first();
         this.bandeauCookies = page.locator('.cookies-overlay, #cookie-banner, .cookie-consent, #onetrust-banner-sdk').first();
 
-        // ── En-tête & Navigation ──
         this.logo = page.locator('header a.main-link, header a.linknav, .header-logo, header .logo').first();
         this.boutonMenu = page.locator('button#leftnavbarbtn, .burger-menu, button[aria-label="Menu"]').first();
         this.menuNavigation = page.locator('.main-nav, .navigation-menu, nav.primary-nav, .nav-overlay').first();
@@ -139,25 +89,21 @@ export class LocateursPage {
         this.boutonRecherche = page.locator('.search-btn, button[aria-label="Search"], a[href*="search"]').first();
         this.selecteurLangue = page.locator('.language-selector, .lang-switch, .locale-selector').first();
 
-        // ── Liens du Menu ──
         this.lienGestionPatrimoine = page.locator('a:has-text("Gestion de patrimoine"), a:has-text("Wealth management"), a[href*="private-clients"]').first();
         this.lienGestionActifs = page.locator('a:has-text("Gestion d\'actifs"), a:has-text("Asset management"), a[href*="asset-management"]').first();
         this.lienTechnologie = page.locator('a:has-text("Technologie"), a:has-text("Technology"), a[href*="technology"]').first();
         this.lienDeveloppementDurable = page.locator('a:has-text("Développement durable"), a:has-text("Sustainability"), a[href*="sustainability"]').first();
         this.lienNousDecouvrir = page.locator('a:has-text("Nous découvrir"), a:has-text("About us"), a[href*="about"]').first();
 
-        // ── Section Héros ──
         this.sectionHeros = page.locator('.hero-section, .hero-banner, .hero, [class*="hero"], .banner-main').first();
         this.titreHeros = page.locator('.hero-title, .hero h1, .hero-section h1, .banner-title').first();
         this.sousTitreHeros = page.locator('.hero-subtitle, .hero p, .hero-section p, .banner-subtitle').first();
 
-        // ── Sections de Contenu ──
         this.sectionExpertise = page.locator('.expertise-section, section:has-text("expertise"), [class*="expertise"]').first();
         this.sectionActualites = page.locator('.news-section, .insights-section, section:has-text("Actualités"), section:has-text("Insights"), [class*="news"], [class*="insight"]').first();
         this.cartesActualites = page.locator('.news-card, .insight-card, .article-card, [class*="news-item"]');
         this.sectionServicesPrives = page.locator('.private-services, section:has-text("clients privés"), [class*="private"]').first();
 
-        // ── Pied de Page ──
         this.piedDePage = page.locator('footer').first();
         this.liensPiedDePage = page.locator('footer a');
         this.texteCopyright = page.locator('footer .copyright, footer small, footer p:has-text("©"), footer .footer-item').first();
@@ -165,7 +111,6 @@ export class LocateursPage {
         this.lienLinkedIn = page.locator('a[href*="linkedin.com/company/lombard-odier"], footer a[href*="linkedin"]').first();
         this.lienMentionsLegales = page.locator('footer a[href*="legal"], footer a:has-text("Mentions légales"), footer a.footer-item.link[href*="legal"]').first();
 
-        // ── Formulaire de Connexion ──
         this.champNomUtilisateur = page.locator('#username, input[name="username"], input[type="email"], #email').first();
         this.champMotDePasse = page.locator('#password, input[name="password"], input[type="password"]').first();
         this.boutonSoumettre = page.locator('button[type="submit"], input[type="submit"], button:has-text("Se connecter"), button:has-text("Login")').first();
@@ -173,11 +118,9 @@ export class LocateursPage {
         this.lienMotDePasseOublie = page.locator('a:has-text("Mot de passe oublié"), a:has-text("Forgot password"), a[href*="forgot"]').first();
         this.titreConnexion = page.locator('.login-title, h1:has-text("Connexion"), h1:has-text("Login"), .auth-title').first();
 
-        // ── Double Authentification ──
         this.champCodeOTP = page.locator('#otp, input[name="otp"], input[name="code"], #verification-code').first();
         this.boutonValiderOTP = page.locator('button:has-text("Valider"), button:has-text("Verify"), button:has-text("Confirmer")').first();
 
-        // ── Tableau de Bord ──
         this.messageAccueil = page.locator('.welcome-message, .greeting, h1:has-text("Bienvenue"), h1:has-text("Welcome")').first();
         this.nomClient = page.locator('.client-name, .user-name, .profile-name').first();
         this.boutonDeconnexion = page.locator('button:has-text("Déconnexion"), button:has-text("Logout"), a:has-text("Logout"), #logout-btn').first();
@@ -190,12 +133,10 @@ export class LocateursPage {
         this.lignesTransactions = page.locator('.transaction-row, .transaction-item, tr.transaction');
         this.sectionMarcheVueEnsemble = page.locator('.market-overview, .market-section, [class*="market"]').first();
 
-        // ── Actions Rapides ──
         this.boutonVirement = page.locator('button:has-text("Virement"), button:has-text("Transfer"), .quick-transfer, [data-action="transfer"]').first();
         this.boutonInvestissement = page.locator('button:has-text("Investir"), button:has-text("Invest"), .quick-invest, [data-action="invest"]').first();
         this.boutonContacterConseiller = page.locator('button:has-text("Contacter"), button:has-text("Contact"), .contact-advisor, [data-action="contact"]').first();
 
-        // ── Analyse des Risques ──
         this.scoreRisque = page.locator('.risk-score, .risk-value, [class*="risk-score"]').first();
         this.niveauRisque = page.locator('.risk-level, .risk-indicator, [class*="risk-level"]').first();
         this.valeurVolatilite = page.locator('.volatility-value, [data-metric="volatility"], [class*="volatility"]').first();

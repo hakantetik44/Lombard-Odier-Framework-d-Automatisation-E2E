@@ -1,19 +1,3 @@
-/**
- * ============================================
- * Lombard Odier - Jenkinsfile
- * ============================================
- * CI/CD Pipeline for E2E Test Automation
- * 
- * Pipeline Stages:
- *   1. Checkout       - Clone repository
- *   2. Install        - Install dependencies & browsers
- *   3. Lint           - TypeScript compilation check
- *   4. Smoke Tests    - Quick smoke validation
- *   5. Regression     - Full regression suite
- *   6. Reports        - Generate Allure + HTML reports
- *   7. Notification   - Send results (Slack/Email)
- */
-
 pipeline {
     agent any
 
@@ -27,19 +11,19 @@ pipeline {
     }
 
     triggers {
-        pollSCM('H/5 * * * *') // Vérifier les nouveaux commits toutes les 5 minutes
+        pollSCM('H/5 * * * *')
     }
 
     parameters {
         choice(
             name: 'BROWSER',
             choices: ['chromium', 'firefox', 'webkit'],
-            description: 'Navigateur pour les tests'
+            description: 'Navigateur'
         )
         choice(
             name: 'TEST_SUITE',
             choices: ['regression', 'smoke', 'critical', 'e2e'],
-            description: 'Suite de tests à exécuter'
+            description: 'Suite'
         )
     }
 
@@ -52,43 +36,37 @@ pipeline {
     }
 
     stages {
-
-        stage('📥 Checkout') {
+        stage('Checkout') {
             steps {
                 cleanWs()
                 checkout scm
-                echo "🏦 Lombard Odier E2E Framework — Branche : ${env.GIT_BRANCH}"
             }
         }
 
-        stage('📦 Installation') {
+        stage('Installation') {
             steps {
                 sh '''
-                    echo "📦 Installation des dépendances..."
                     npm install --legacy-peer-deps
-                    echo "🌐 Installation des navigateurs Playwright..."
                     npx playwright install --with-deps ${BROWSER}
                 '''
             }
         }
 
-        stage('🔍 Lint & Build') {
+        stage('Lint') {
             steps {
                 sh 'npm run lint || true'
             }
         }
 
-        stage('🧪 Exécution des Tests (Headless)') {
+        stage('Tests') {
             steps {
                 script {
-                    echo "🧪 Lancement de la suite : ${params.TEST_SUITE}"
-                    // L'exécution se fait TOUJOURS en Headless dans Jenkins via la variable d'env
                     sh "HEADLESS=true npx cucumber-js --profile ${params.TEST_SUITE} || true"
                 }
             }
         }
 
-        stage('📊 Génération du Rapport Allure') {
+        stage('Reports') {
             steps {
                 sh 'npm run report:generate || true'
             }
@@ -97,32 +75,26 @@ pipeline {
 
     post {
         always {
-            echo '📦 Archiving test artifacts...'
-
-            // Archive Allure results
             allure([
                 includeProperties: true,
                 jdk: '',
                 results: [[path: 'reports/allure-results']]
             ])
 
-            // Archive Cucumber HTML report
             publishHTML([
                 allowMissing: true,
                 alwaysLinkToLastBuild: true,
                 keepAll: true,
                 reportDir: 'reports',
                 reportFiles: 'cucumber-report.html',
-                reportName: 'Cucumber HTML Report',
-                reportTitles: 'LO E2E Test Report'
+                reportName: 'Cucumber Report',
+                reportTitles: 'Test Report'
             ])
 
-            // Archive screenshots and videos
             archiveArtifacts artifacts: 'reports/screenshots/**/*.png', allowEmptyArchive: true
             archiveArtifacts artifacts: 'reports/videos/**/*.webm', allowEmptyArchive: true
             archiveArtifacts artifacts: 'reports/cucumber-report.json', allowEmptyArchive: true
 
-            // Cleanup workspace
             cleanWs(
                 deleteDirs: true,
                 patterns: [
@@ -130,27 +102,6 @@ pipeline {
                     [pattern: 'reports/**', type: 'EXCLUDE']
                 ]
             )
-        }
-
-        success {
-            echo '🎉 ═══════════════════════════════════════════'
-            echo '  ✅ ALL TESTS PASSED SUCCESSFULLY!'
-            echo '  📊 Allure Report: Available in Jenkins'
-            echo '  📋 Cucumber Report: Available in Jenkins'
-            echo '═══════════════════════════════════════════════'
-        }
-
-        failure {
-            echo '❌ ═══════════════════════════════════════════'
-            echo '  ❌ SOME TESTS FAILED!'
-            echo '  📸 Screenshots saved in reports/screenshots/'
-            echo '  🎬 Videos saved in reports/videos/'
-            echo '  📊 Check Allure Report for details'
-            echo '═══════════════════════════════════════════════'
-        }
-
-        unstable {
-            echo '⚠️  Tests completed with warnings. Review the Allure report.'
         }
     }
 }

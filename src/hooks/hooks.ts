@@ -1,14 +1,3 @@
-/**
- * ============================================
- * Lombard Odier — Hooks (Crochets Cucumber)
- * ============================================
- * Gestion du cycle de vie des tests :
- *   - Lancement et fermeture du navigateur
- *   - Création du contexte et de la page par scénario
- *   - Capture d'écran en cas d'échec
- *   - Enregistrement vidéo attaché à Allure
- */
-
 import 'allure-cucumberjs';
 import { Before, After, BeforeAll, AfterAll, Status, ITestCaseHookParameter, setDefaultTimeout } from '@cucumber/cucumber';
 import {
@@ -25,12 +14,7 @@ import { ENV_CONFIG } from '../config/env.config';
 import * as fs from 'fs';
 import * as path from 'path';
 
-// Délai global pour les étapes et hooks (60 secondes)
 setDefaultTimeout(60 * 1000);
-
-// ══════════════════════════════════════════════
-//  HOOKS GLOBAUX (une fois par exécution)
-// ══════════════════════════════════════════════
 
 BeforeAll({ timeout: 30000 }, async function () {
     console.log('╔══════════════════════════════════════════════╗');
@@ -40,7 +24,6 @@ BeforeAll({ timeout: 30000 }, async function () {
     console.log('║   URL de base : ' + ENV_CONFIG.baseUrl.padEnd(31) + '║');
     console.log('╚══════════════════════════════════════════════╝');
 
-    // Créer les dossiers de rapports
     const dossiers = [
         ENV_CONFIG.paths.allureResults,
         ENV_CONFIG.paths.screenshots,
@@ -52,7 +35,6 @@ BeforeAll({ timeout: 30000 }, async function () {
         }
     });
 
-    // Lancer le navigateur
     await lancerNavigateur();
     console.log(`✅ Navigateur lancé : ${ENV_CONFIG.browser.name} (headless: ${ENV_CONFIG.browser.headless})`);
 });
@@ -69,10 +51,6 @@ AfterAll({ timeout: 30000 }, async function () {
     console.log('══════════════════════════════════════════════');
 });
 
-// ══════════════════════════════════════════════
-//  HOOKS PAR SCÉNARIO
-// ══════════════════════════════════════════════
-
 let debutScenario: number;
 
 Before({ timeout: 60000 }, async function (scenario: ITestCaseHookParameter) {
@@ -83,18 +61,15 @@ Before({ timeout: 60000 }, async function (scenario: ITestCaseHookParameter) {
     console.log(`\n▶ Démarrage du scénario : ${nomScenario}`);
     if (tags) console.log(`  Tags : ${tags}`);
 
-    // Créer un contexte et une page pour ce scénario (isolation des tests)
     await creerContexte();
     const page = await creerPage();
 
-    // Maximiser la fenêtre dès l'ouverture via PagePrincipale
     const { PagePrincipale } = require('../pages/PagePrincipale');
     const pagePrincipale = new PagePrincipale(page);
     await pagePrincipale.maximiserFenetre();
 
     console.log('  🖥 Navigateur prêt et maximisé selon la résolution d\'écran');
 
-    // Écrire les infos d'environnement Allure
     ecrireEnvironnementAllure();
 });
 
@@ -108,7 +83,6 @@ After({ timeout: 60000 }, async function (scenario: ITestCaseHookParameter) {
         console.error(`  ❌ MESSAGE D'ERREUR : ${scenario.result?.message}`);
     }
 
-    // 📸 Capture d'écran en cas d'échec
     if (statut === Status.FAILED) {
         try {
             const page = getPage();
@@ -132,7 +106,6 @@ After({ timeout: 60000 }, async function (scenario: ITestCaseHookParameter) {
         }
     }
 
-    // 🎬 Attacher la vidéo à Allure avec durée
     if (ENV_CONFIG.videoRecording) {
         try {
             const finScenario = Date.now();
@@ -150,14 +123,9 @@ After({ timeout: 60000 }, async function (scenario: ITestCaseHookParameter) {
         }
     }
 
-    // Fermer le contexte et la page
     await fermerPage();
     await fermerContexte();
 });
-
-// ══════════════════════════════════════════════
-//  HOOKS TAGUÉS
-// ══════════════════════════════════════════════
 
 Before({ tags: '@smoke' }, async function () {
     console.log('  🔥 Test SMOKE');
@@ -166,10 +134,6 @@ Before({ tags: '@smoke' }, async function () {
 Before({ tags: '@critical' }, async function () {
     console.log('  🚨 Test CRITIQUE');
 });
-
-// ══════════════════════════════════════════════
-//  FONCTIONS UTILITAIRES
-// ══════════════════════════════════════════════
 
 function ecrireEnvironnementAllure(): void {
     const contenu = [

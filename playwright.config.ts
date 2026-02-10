@@ -1,10 +1,3 @@
-/**
- * ============================================
- * Lombard Odier - Playwright Configuration
- * ============================================
- * Used for direct Playwright test execution (non-Cucumber).
- */
-
 import { defineConfig, devices } from '@playwright/test';
 import { ENV_CONFIG } from './src/config/env.config';
 

@@ -1,10 +1,3 @@
-/**
- * ============================================
- * Lombard Odier - Browser Configuration
- * ============================================
- * Playwright browser launch options and context configuration.
- */
-
 import { LaunchOptions, BrowserContextOptions } from '@playwright/test';
 import { ENV_CONFIG } from './env.config';
 
@@ -24,8 +17,6 @@ export const LAUNCH_OPTIONS: LaunchOptions = {
 };
 
 export const CONTEXT_OPTIONS: BrowserContextOptions = {
-    // En mode headed, viewport null permet de prendre toute la place.
-    // En mode headless (Jenkins), il faut fixer une taille pour éviter les erreurs de clic hors viewport.
     viewport: ENV_CONFIG.browser.headless
         ? { width: ENV_CONFIG.browser.viewportWidth, height: ENV_CONFIG.browser.viewportHeight }
         : null,

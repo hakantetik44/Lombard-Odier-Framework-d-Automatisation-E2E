@@ -1,9 +1,3 @@
-/**
- * ============================================
- * Lombard Odier — Configuration Cucumber
- * ============================================
- */
-
 const commun = {
     requireModule: ['ts-node/register'],
     require: [
