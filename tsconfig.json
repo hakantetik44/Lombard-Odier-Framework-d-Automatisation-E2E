@@ -1,0 +1,54 @@
+{
+    "compilerOptions": {
+        "target": "ES2022",
+        "module": "commonjs",
+        "lib": [
+            "ES2022",
+            "DOM"
+        ],
+        "moduleResolution": "node",
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "strict": true,
+        "resolveJsonModule": true,
+        "declaration": true,
+        "outDir": "./dist",
+        "rootDir": ".",
+        "baseUrl": ".",
+        "paths": {
+            "@pages/*": [
+                "src/pages/*"
+            ],
+            "@locators/*": [
+                "src/pages/locators/*"
+            ],
+            "@config/*": [
+                "src/config/*"
+            ],
+            "@support/*": [
+                "src/support/*"
+            ],
+            "@steps/*": [
+                "src/steps/*"
+            ],
+            "@hooks/*": [
+                "src/hooks/*"
+            ]
+        },
+        "types": [
+            "node"
+        ],
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true
+    },
+    "include": [
+        "src/**/*.ts",
+        "tests/**/*.ts",
+        "cucumber.js"
+    ],
+    "exclude": [
+        "node_modules",
+        "dist",
+        "reports"
+    ]
+}

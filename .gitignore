@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Build output
+dist/
+*.js.map
+
+# Reports & Artifacts
+reports/allure-results/
+reports/allure-report/
+reports/playwright-report/
+reports/screenshots/
+reports/videos/
+reports/*.html
+reports/*.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment (keep .env.example but not actual .env)
+# .env
+.env.local
+
+# Misc
+*.log
+*.tsbuildinfo
