@@ -1,47 +1,63 @@
-# 🏦 Lombard Odier — Framework d'Automatisation E2E
+<div align="center">
 
-> Framework de tests End-to-End de niveau entreprise construit avec **Playwright + Cucumber + TypeScript**
-> pour la plateforme de gestion de patrimoine numérique Lombard Odier.
+# 🏦 Lombard Odier
+### **Framework d'Automatisation E2E Excellence**
+
+[![Playwright](https://img.shields.io/badge/Playwright-2EB67D?style=for-the-badge&logo=playwright&logoColor=white)](https://playwright.dev/)
+[![Cucumber](https://img.shields.io/badge/Cucumber-23D96C?style=for-the-badge&logo=cucumber&logoColor=white)](https://cucumber.io/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
+[![Allure](https://img.shields.io/badge/Allure_Report-FF6B6B?style=for-the-badge&logo=allure&logoColor=white)](https://docs.qameta.io/allure/)
+[![Jenkins](https://img.shields.io/badge/Jenkins-D24939?style=for-the-badge&logo=jenkins&logoColor=white)](https://www.jenkins.io/)
+
+> **Une solution de test End-to-End de qualité bancaire, robuste et évolutive, conçue spécifiquement pour l'écosystème numérique de Lombard Odier.**
+
+[🚀 Installation](#-installation) • [▶️ Exécution](#-exécution-des-tests) • [📊 Rapports](#-rapports) • [🏗 Architecture](#-aperçu-de-larchitecture)
 
 ---
+</div>
 
 ## 📋 Table des Matières
 
-- [Aperçu de l'Architecture](#-aperçu-de-larchitecture)
-- [Structure du Projet](#-structure-du-projet)
-- [Prérequis](#-prérequis)
-- [Installation](#-installation)
-- [Exécution des Tests](#-exécution-des-tests)
-- [Rapports](#-rapports)
-- [Intégration CI/CD](#-intégration-cicd)
-- [Configuration](#-configuration)
-- [Patrons de Conception](#-patrons-de-conception)
+<details>
+<summary><b>📖 Cliquez pour explorer</b></summary>
+
+- [🏗 Aperçu de l'Architecture](#-aperçu-de-larchitecture)
+- [📁 Structure du Projet](#-structure-du-projet)
+- [🔧 Prérequis](#-prérequis)
+- [📦 Installation](#-installation)
+- [▶️ Exécution des Tests](#-exécution-des-tests)
+- [📊 Rapports](#-rapports)
+- [🔄 Intégration CI/CD](#-intégration-cicd)
+- [⚙️ Configuration](#-configuration)
+- [🎯 Patrons de Conception](#-patrons-de-conception)
+</details>
+
+---
+
+## 🌟 Points Forts du Framework
+
+| 🚀 Vitesse | 🛡️ Robustesse | 📊 Visibilité |
+| :--- | :--- | :--- |
+| Exécution parallèle et moteur Playwright ultra-rapide. | Mécanismes d'auto-attente et résilience aux changements. | Rapports Allure détaillés avec vidéo et captures. |
+
+---
 
 ---
 
 ## 🏗 Aperçu de l'Architecture
 
+```mermaid
+graph TD
+    A[<b>Fichier Feature</b><br/>Gherkin - Scénario Unique] --> B[<b>Définitions d'Étapes</b><br/>Glue Code]
+    B --> C[<b>Page Principale</b><br/>Actions Métier & Allure]
+    C --> D[<b>Page Base</b><br/>Fonctions Communes]
+    C --> E[<b>Locateurs</b><br/>Sélecteurs CSS/XPath]
+    D --> F[<b>Moteur Playwright</b><br/>Automatisation & Rapports]
+    E --> F
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                   FICHIER FEATURE (Gherkin)                  │
-│         (Un seul scénario E2E complet et continu)            │
-├─────────────────────────────────────────────────────────────┤
-│                 DÉFINITIONS D'ÉTAPES                         │
-│       (Délégation propre aux méthodes PagePrincipale)        │
-├─────────────────────────────────────────────────────────────┤
-│                    PAGE PRINCIPALE                           │
-│        (Actions métier + annotations Allure)                 │
-├─────────────────────────────────────────────────────────────┤
-│                      PAGE BASE                               │
-│    (Fonctions communes : attente, clic, assertion, etc.)     │
-├─────────────────────────────────────────────────────────────┤
-│                   LOCATEURS PAGE                             │
-│         (Sélecteurs CSS/XPath centralisés)                   │
-├─────────────────────────────────────────────────────────────┤
-│                   MOTEUR PLAYWRIGHT                          │
-│        (Automatisation navigateur + Vidéo + Capture)         │
-└─────────────────────────────────────────────────────────────┘
-```
+
+> La structure suit une approche **modulaire et hiérarchique** pour garantir une maintenance facile et une lisibilité maximale.
 
 ---
 
