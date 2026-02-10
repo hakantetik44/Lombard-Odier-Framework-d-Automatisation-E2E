@@ -73,7 +73,10 @@ AfterAll({ timeout: 30000 }, async function () {
 //  HOOKS PAR SCÉNARIO
 // ══════════════════════════════════════════════
 
+let debutScenario: number;
+
 Before({ timeout: 60000 }, async function (scenario: ITestCaseHookParameter) {
+    debutScenario = Date.now();
     const nomScenario = scenario.pickle.name;
     const tags = scenario.pickle.tags.map((t) => t.name).join(', ');
 
@@ -129,14 +132,18 @@ After({ timeout: 60000 }, async function (scenario: ITestCaseHookParameter) {
         }
     }
 
-    // 🎬 Attacher la vidéo à Allure
+    // 🎬 Attacher la vidéo à Allure avec durée
     if (ENV_CONFIG.videoRecording) {
         try {
+            const finScenario = Date.now();
+            const dureeSecondes = Math.floor((finScenario - debutScenario) / 1000);
+
             const cheminVideo = await obtenirCheminVideo();
             if (cheminVideo && fs.existsSync(cheminVideo)) {
                 const tamponVideo = fs.readFileSync(cheminVideo);
                 this.attach(tamponVideo, 'video/webm');
-                console.log(`  🎬 Vidéo attachée : ${cheminVideo}`);
+                this.attach(`Durée totale du test : ${dureeSecondes} secondes`, 'text/plain');
+                console.log(`  🎬 Vidéo attachée (${dureeSecondes}s) : ${cheminVideo}`);
             }
         } catch (erreur) {
             console.error('  ⚠ Échec de l\'attachement vidéo :', erreur);
