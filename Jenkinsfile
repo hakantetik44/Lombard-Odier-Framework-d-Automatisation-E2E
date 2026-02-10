@@ -18,6 +18,7 @@ pipeline {
     agent any
 
     environment {
+        PATH         = "/Users/macbook/.nvm/versions/node/v20.20.0/bin:/usr/local/bin:${env.PATH}"
         NODE_ENV     = 'ci'
         HEADLESS     = 'true'
         ENV          = "${params.ENVIRONMENT ?: 'production'}"
