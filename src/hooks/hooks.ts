@@ -9,6 +9,7 @@
  *   - Enregistrement vidéo attaché à Allure
  */
 
+import 'allure-cucumberjs';
 import { Before, After, BeforeAll, AfterAll, Status, ITestCaseHookParameter, setDefaultTimeout } from '@cucumber/cucumber';
 import {
     lancerNavigateur,

@@ -11,7 +11,8 @@
     "test:headed": "HEADLESS=false npx cucumber-js",
     "report:generate": "npx allure generate reports/allure-results --clean -o reports/allure-report",
     "report:open": "npm run report:generate && npx allure open reports/allure-report",
-    "clean": "rm -rf reports/allure-results/* reports/allure-report reports/screenshots/* reports/videos/* reports/rapport-cucumber.*"
+    "clean": "rm -rf reports/allure-results/* reports/allure-report reports/screenshots/* reports/videos/* reports/rapport-cucumber.* reports/cucumber-report.*",
+    "lint": "npx tsc --noEmit"
   },
   "dependencies": {
     "@cucumber/cucumber": "^10.8.0",

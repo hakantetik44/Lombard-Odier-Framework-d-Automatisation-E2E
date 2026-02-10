@@ -15,8 +15,8 @@ const commun = {
     format: [
         'progress-bar',
         'allure-cucumberjs/reporter',
-        'html:reports/rapport-cucumber.html',
-        'json:reports/rapport-cucumber.json',
+        'html:reports/cucumber-report.html',
+        'json:reports/cucumber-report.json',
     ],
     formatOptions: {
         snippetInterface: 'async-await',
@@ -35,9 +35,6 @@ module.exports = {
     regression: {
         ...commun,
         tags: '@regression',
-        formatOptions: {
-            ...commun.formatOptions,
-        }
     },
     critical: {
         ...commun,
