@@ -140,10 +140,20 @@ npx tsc --noEmit
 
 ## ▶️ Exécution des Tests
 
+### Commande Principale (Recommandée) 🚀
+
+C'est la commande la plus importante pour le développement local. Elle enchaîne le nettoyage, l'exécution des tests et l'ouverture automatique du rapport Allure.
+
+```bash
+npm run test:report
+```
+
+---
+
 ### Tests Cucumber (BDD)
 
 ```bash
-# Exécuter tous les tests
+# Exécuter tous les tests (sans ouverture auto du rapport)
 npm test
 
 # Exécuter par profil
@@ -174,14 +184,17 @@ npm run test:playwright:ui        # Mode interactif UI
 ### Rapport Allure
 
 ```bash
-# Générer et ouvrir le rapport Allure
+# ⚠️ La commande suivante est recommandée car elle fait TOUT :
+npm run test:report
+
+# Générer et ouvrir le rapport Allure manuellement
 npm run report:allure
 
 # Générer uniquement
-npm run report:allure:generate
+npm run report:generate
 
 # Ouvrir un rapport existant
-npm run report:allure:open
+npm run report:open
 ```
 
 ### Rapport Cucumber HTML
@@ -216,8 +229,11 @@ npm run test:regression:report # Régression + rapport Allure
 Le `Jenkinsfile` fournit une pipeline CI/CD complète :
 
 ```
-📥 Checkout → 📦 Installation → 🔍 Lint → 🔥 Smoke → 🧪 Tests → 📊 Rapports
+📥 Checkout → 📦 Installation → 🔍 Lint → 🧪 Tests (Headless) → 📊 Rapports
 ```
+
+> **Note :** La pipeline est configurée pour s'exécuter automatiquement à chaque **commit** (via polling SCM) et utilise exclusivement le mode **Headless** pour une performance optimale sur le serveur.
+
 
 **Paramètres de la pipeline :**
 
